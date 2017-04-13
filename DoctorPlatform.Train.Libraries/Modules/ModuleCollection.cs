@@ -1,4 +1,5 @@
 ﻿using DoctorPlatform.Train.Libraries.Exception;
+using DoctorPlatform.Train.Tools.Collections.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +9,7 @@ using System.Threading.Tasks;
 namespace DoctorPlatform.Train.Libraries.Modules
 {
     /// <summary>
-    /// 用于存储ModuleInfo对象到dictionary集合中
+    /// 用于存储ModuleInfo对象的集合
     /// </summary>
     public class ModuleCollection : List<ModuleInfo>
     {
@@ -37,13 +38,66 @@ namespace DoctorPlatform.Train.Libraries.Modules
         }
 
         /// <summary>
-        /// 分类模块相符的依赖
-        /// 如果模块A依赖于模块B，
+        /// 依赖排序
+        /// 如果模块A依赖于模块B，A之后的B也在返回列表中
         /// </summary>
         /// <returns></returns>
         public List<ModuleInfo> GetSortedModuleListByDependency()
         {
+            //获取到排序后的Module
+            var sortedModules = this.SortByDependencies(x => x.Dependencies);
+            EnsureKernelModuleToBeFirst(sortedModules);
+            EnsureStartupModuleToBeLast(sortedModules, StartupModuleType);
+            return sortedModules;
+        }
 
+        /// <summary>
+        /// 确保KernelModule是第一个模块
+        /// </summary>
+        /// <param name="modules"></param>
+        public static void EnsureKernelModuleToBeFirst(List<ModuleInfo> modules)
+        {
+            var kernelModuleIndex = modules.FindIndex(m => m.Type == typeof(KernelModule));
+            if (kernelModuleIndex <= 0)
+            {
+                //是第一个模块
+                return;
+            }
+
+            var kernelModule = modules[kernelModuleIndex];
+            modules.RemoveAt(kernelModuleIndex);
+            modules.Insert(0, kernelModule);
+        }
+
+        /// <summary>
+        /// 确保StartupModule是最后一个模块
+        /// </summary>
+        /// <param name="modules"></param>
+        /// <param name="startupModuleType"></param>
+        public static void EnsureStartupModuleToBeLast(List<ModuleInfo> modules, Type startupModuleType)
+        {
+            var startupModuleIndex = modules.FindIndex(m => m.Type == startupModuleType);
+
+            if (startupModuleIndex >= modules.Count - 1)
+            {
+                //是最后一个模块
+                return;
+            }
+
+            var startupModule = modules[startupModuleIndex];
+
+            modules.RemoveAt(startupModuleIndex);
+            modules.Add(startupModule);
+        }
+
+        public void EnsureKernelModuleToBeFirst()
+        {
+            EnsureKernelModuleToBeFirst(this);
+        }
+
+        public void EnsureStartupModuleToBeLast()
+        {
+            EnsureStartupModuleToBeLast(this, StartupModuleType);
         }
     }
 }

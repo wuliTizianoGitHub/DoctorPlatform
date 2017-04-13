@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 namespace DoctorPlatform.Train.Libraries.Modules
 {
     /// <summary>
-    /// 用于存储一个模块所有需要的信息
+    /// 该类用于存储一个模块所有需要的信息
     /// </summary>
     public class ModuleInfo
     {
