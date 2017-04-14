@@ -1,5 +1,5 @@
 ﻿using DoctorPlatform.Train.Libraries.Domain.Entities;
-using DoctorPlatform.Train.Libraries.Exceptions;
+using DoctorPlatform.Train.Libraries.Exception;
 using System;
 using System.Collections.Generic;
 using System.Linq;

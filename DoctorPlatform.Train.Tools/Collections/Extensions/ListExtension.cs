@@ -76,4 +76,4 @@ namespace DoctorPlatform.Train.Tools.Collections.Extensions
         }
     }
 }
-}
+

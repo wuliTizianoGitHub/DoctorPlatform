@@ -48,6 +48,7 @@
     </Reference>
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -71,6 +72,7 @@
     <Compile Include="Dependency\IIocManager.cs" />
     <Compile Include="Dependency\IIocRegistrar.cs" />
     <Compile Include="Dependency\IIocResolver.cs" />
+    <Compile Include="Dependency\Installers\CoreInstaller.cs" />
     <Compile Include="Dependency\IocManager.cs" />
     <Compile Include="Dependency\IocRegistrarExtensions.cs" />
     <Compile Include="Dependency\IScopedIocResolver.cs" />
@@ -78,7 +80,19 @@
     <Compile Include="Configuration\IStartupConfiguration.cs" />
     <Compile Include="Dependency\ITransientDependency.cs" />
     <Compile Include="Dependency\ScopedIocResolver.cs" />
+    <Compile Include="Domain\Entities\Auditing\IAudited.cs" />
+    <Compile Include="Domain\Entities\Auditing\ICreationAudited.cs" />
+    <Compile Include="Domain\Entities\Auditing\IDeletionAudited.cs" />
+    <Compile Include="Domain\Entities\Auditing\IHasCreationTime.cs" />
+    <Compile Include="Domain\Entities\Auditing\IHasDeletionTime.cs" />
+    <Compile Include="Domain\Entities\Auditing\IHasModificationTime.cs" />
+    <Compile Include="Domain\Entities\Auditing\IModificationAudited.cs" />
+    <Compile Include="Domain\Entities\Entity.cs" />
+    <Compile Include="Domain\Entities\EntityExtensions.cs" />
+    <Compile Include="Domain\Entities\EntityHelper.cs" />
     <Compile Include="Domain\Entities\IEntity.cs" />
+    <Compile Include="Domain\Entities\IPassivable.cs" />
+    <Compile Include="Domain\Entities\ISoftDelete.cs" />
     <Compile Include="Domain\Repositories\RepositoryBase.cs" />
     <Compile Include="EntityFramework\BaseDbContextProvider.cs" />
     <Compile Include="EntityFramework\IDbContextProvider.cs" />
@@ -99,7 +113,10 @@
     <Compile Include="Reflection\AssemblyFinder.cs" />
     <Compile Include="Reflection\IAssemblyFinder.cs" />
     <Compile Include="Reflection\ITypeFinder.cs" />
+    <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Reflection\TypeFinder.cs" />
+    <Compile Include="Web\WebApplication.cs" />
+    <Compile Include="Web\WebModule.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DoctorPlatform.Train.Tools\DoctorPlatform.Train.Tools.csproj">
@@ -110,7 +127,9 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="Domain\Uow\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

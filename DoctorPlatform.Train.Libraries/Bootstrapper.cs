@@ -1,7 +1,11 @@
 ﻿using Castle.Core.Logging;
+using Castle.MicroKernel.Registration;
+using DoctorPlatform.Train.Libraries.Configuration;
 using DoctorPlatform.Train.Libraries.Dependency;
+using DoctorPlatform.Train.Libraries.Dependency.Installers;
 using DoctorPlatform.Train.Libraries.Modules;
 using DoctorPlatform.Train.Tools.Attributes;
+using DoctorPlatform.Train.Tools.Common;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -42,20 +46,149 @@ namespace DoctorPlatform.Train.Libraries
         /// </summary>
         private ILogger _logger;
 
+
+        /// <summary>
+        /// 创建一个新的<see cref="Bootstrapper"/>实例
+        /// </summary>
+        /// <param name="startupModule">应用程序中的启动模块依赖于其它使用模块，应该继承自<see cref="BaseModule"></param>
         private Bootstrapper([NotNull] Type startupModule)
             : this(startupModule, Dependency.IocManager.Instance)
         {
 
         }
 
+        /// <summary>
+        /// 创建一个新的<see cref="Bootstrapper"/>实例
+        /// </summary>
+        /// <param name="startupModule">应用程序中的启动模块依赖于其它使用模块，应该继承自<see cref="BaseModule"></param>
+        /// <param name="iocManager">IIocManager用于引导系统</param>
         private Bootstrapper([NotNull] Type startupModule, [NotNull] IIocManager iocManager)
         {
+            Check.NotNull(startupModule, nameof(startupModule));
+            Check.NotNull(iocManager, nameof(iocManager));
+
+            if (!typeof(BaseModule).IsAssignableFrom(startupModule))
+            {
+                throw new ArgumentException($"{nameof(startupModule)} should be derived from {nameof(BaseModule)}.");
+            }
+
+            StartupModule = startupModule;
+            IocManager = iocManager;
+
+            _logger = NullLogger.Instance;
+        }
+
+        /// <summary>
+        /// 创建一个新的<see cref="Bootstrapper"/>实例
+        /// </summary>
+        /// <typeparam name="TStartupModule">应用程序中的启动模块依赖于其它使用模块，应该继承自<see cref="BaseModule"></typeparam>
+        /// <returns></returns>
+        public static Bootstrapper Create<TStartupModule>()
+            where TStartupModule : BaseModule
+        {
+            return new Bootstrapper(typeof(TStartupModule));
+        }
+
+        /// <summary>
+        /// 创建一个新的<see cref="Bootstrapper"/>实例
+        /// </summary>
+        /// <typeparam name="TStartupModule">应用程序中的启动模块依赖于其它使用模块，应该继承自<see cref="BaseModule"></typeparam>
+        /// <param name="iocManager">IIocManager用于引导系统</param>
+        /// <returns></returns>
+        public static Bootstrapper Create<TStartupModule>([NotNull]IIocManager iocManager)
+            where TStartupModule : BaseModule
+        {
+            return new Bootstrapper(typeof(TStartupModule), iocManager);
+        }
+
+        /// <summary>
+        /// 创建一个新的<see cref="Bootstrapper"/>实例
+        /// </summary>
+        /// <param name="startupModule">应用程序中的启动模块依赖于其它使用模块，应该继承自<see cref="BaseModule"></param>
+        public static Bootstrapper Create([NotNull]Type startupModule)
+        {
+            return new Bootstrapper(startupModule);
+        }
+
+        /// <summary>
+        /// 创建一个新的<see cref="Bootstrapper"/>实例
+        /// </summary>
+        /// <param name="startupModule">应用程序中的启动模块依赖于其它使用模块，应该继承自<see cref="BaseModule"></param>
+        /// <param name="iocManager">IIocManager用于引导系统</param>
+        public static Bootstrapper Create([NotNull] Type startupModule, [NotNull] IIocManager iocManager)
+        {
+            return new Bootstrapper(startupModule, iocManager);
+        }
+
+
+        /// <summary>
+        /// 初始化系统
+        /// </summary>
+        public virtual void Initialize()
+        {
+            ResolveLogger();
+
+            try
+            {
+                RegisterBootstrpper();
+
+                //todo： 安装或者解析一些组件
+                IocManager.IocContainer.Install(new CoreInstaller());
+                IocManager.Resolve<StartupConfiguration>().Initialize();
+
+                //。。。。
+
+                //启动模块
+                _moduleManager = IocManager.Resolve<ModuleManager>();
+                _moduleManager.Initialize(StartupModule);
+                _moduleManager.StartModules();
+            }
+            catch (System.Exception ex)
+            {
+
+                _logger.Fatal(ex.ToString(), ex);
+                throw;
+            }
+
 
         }
 
+
+        /// <summary>
+        ///  解析日志管理器
+        /// </summary>
+        private void ResolveLogger()
+        {
+            if (IocManager.IsRegistered<ILoggerFactory>())
+            {
+                _logger = IocManager.Resolve<ILoggerFactory>().Create(typeof(Bootstrapper));
+            }
+        }
+
+        /// <summary>
+        /// 注册引导
+        /// </summary>
+        private void RegisterBootstrpper()
+        {
+            if (!IocManager.IsRegistered<Bootstrapper>())
+            {
+                IocManager.IocContainer.Register(Component.For<Bootstrapper>().Instance(this));
+            }
+        }
+
+        /// <summary>
+        /// 销毁整个系统
+        /// </summary>
         public void Dispose()
         {
-            throw new NotImplementedException();
+            if (IsDisposed)
+            {
+                return;
+            }
+            IsDisposed = true;
+
+            //关闭所有模块
+            _moduleManager?.ShutdownModules();
         }
     }
 }

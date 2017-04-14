@@ -64,7 +64,6 @@
     <Compile Include="Entities\Authorization\User\TSysUser.cs" />
     <Compile Include="Entities\Authorization\User\TSysUserManager.cs" />
     <Compile Include="Entities\Authorization\User\TSysUserStore.cs" />
-    <Compile Include="Entities\Entity.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,6 +73,12 @@
   <ItemGroup>
     <Folder Include="Entities\Authorization\Permission\" />
     <Folder Include="Exceptions\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DoctorPlatform.Train.Libraries\DoctorPlatform.Train.Libraries.csproj">
+      <Project>{B5CFEDB5-E3EE-4480-AEFE-A8C9CF67E526}</Project>
+      <Name>DoctorPlatform.Train.Libraries</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

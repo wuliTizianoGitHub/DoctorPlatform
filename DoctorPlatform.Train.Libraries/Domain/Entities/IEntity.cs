@@ -6,4 +6,9 @@
 
         bool IsTransient();
     }
+
+    public interface IEntity : IEntity<int>
+    {
+
+    }
 }
