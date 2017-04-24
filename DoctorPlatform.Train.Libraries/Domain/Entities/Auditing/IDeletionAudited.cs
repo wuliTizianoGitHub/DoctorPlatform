@@ -12,7 +12,7 @@
     }
 
     /// <summary>
-    /// 为用户添加导航属性到<see cref="IDeletionAudited"/>
+    /// 将用户设置为<see cref="IDeletionAudited"/>的导航属性
     /// </summary>
     /// <typeparam name="TUser">用户类型</typeparam>
     public interface IDeletionAudited<TUser> : IDeletionAudited

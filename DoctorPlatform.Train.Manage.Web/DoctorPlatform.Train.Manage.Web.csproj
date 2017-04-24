@@ -265,6 +265,12 @@
       <DependentUpon>TypeLite.Net4.tt</DependentUpon>
     </TypeScriptCompile>
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DoctorPlatform.Train.Libraries\DoctorPlatform.Train.Libraries.csproj">
+      <Project>{b5cfedb5-e3ee-4480-aefe-a8c9cf67e526}</Project>
+      <Name>DoctorPlatform.Train.Libraries</Name>
+    </ProjectReference>
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

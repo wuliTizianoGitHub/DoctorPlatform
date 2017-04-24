@@ -20,7 +20,7 @@ namespace DoctorPlatform.Train.Libraries.Domain.Entities.Auditing
 
 
     /// <summary>
-    /// 为用户添加导航属性到<see cref="ICreationAudited"/>
+    /// 将用户设置为<see cref="ICreationAudited"/>的导航属性
     /// </summary>
     /// <typeparam name="TUser">用户类型</typeparam>
     public interface ICreationAudited<TUser> : ICreationAudited

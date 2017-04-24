@@ -1,4 +1,5 @@
-﻿using Models;
+﻿using DoctorPlatform.Train.Libraries.Alipay;
+using Models;
 using Models.DAL;
 using Models.ViewModel;
 using System;
@@ -14,8 +15,12 @@ namespace DoctorPlatform.Train.Manage.Web.Controllers
     {
         private readonly Repository _repository;
 
+      
         public HomeController()
         {
+
+
+           
             this._repository = new Repository(new ModelStateWrapper(this.ModelState));
         }
 
