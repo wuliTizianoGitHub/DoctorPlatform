@@ -30,89 +30,54 @@ namespace DoctorPlatform.Train.Libraries.Alipay
         /// <param name="subject">订单名称</param>
         /// <param name="total_fee">金额</param>
         /// <returns>请求字符串</returns>
-        public static void CostomAlipaySubmit(this HttpContextBase context, string out_trade_no, string subject, string total_fee)
+        public static string CostomAlipaySubmit(string out_trade_no, string total_fee, string subject, string trade_desciption = "")
         {
             SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
-            sParaTemp.Add("service", Config.service);
-            sParaTemp.Add("partner", Config.partner);
-            sParaTemp.Add("seller_id", Config.seller_id);
-            sParaTemp.Add("_input_charset", Config.input_charset.ToLower());
-            sParaTemp.Add("payment_type", Config.payment_type);
-            sParaTemp.Add("notify_url", Config.notify_url);
-            sParaTemp.Add("return_url", Config.return_url);
-            sParaTemp.Add("anti_phishing_key", Config.anti_phishing_key);
-            sParaTemp.Add("exter_invoke_ip", Config.exter_invoke_ip);
-            sParaTemp.Add("out_trade_no", out_trade_no);
-            sParaTemp.Add("subject", subject);
-            sParaTemp.Add("total_fee", total_fee);
-            sParaTemp.Add("body", string.Empty);
-            string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
-            context.Response.Write(sHtmlText);
-        }
-
-        /// <summary>
-        /// 订单支付
-        /// </summary>
-        /// <param name="out_trade_no">订单号</param>
-        /// <param name="subject">订单名称</param>
-        /// <param name="total_fee">金额</param>
-        /// <param name="trade_desciption">描述</param>
-        /// <returns>请求字符串</returns>
-        public static void CostomAlipaySubmit(this HttpContextBase context, string out_trade_no, string subject, string total_fee, string trade_desciption)
-        {
-            SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
-            sParaTemp.Add("service", Config.service);
-            sParaTemp.Add("partner", Config.partner);
-            sParaTemp.Add("seller_id", Config.seller_id);
-            sParaTemp.Add("_input_charset", Config.input_charset.ToLower());
-            sParaTemp.Add("payment_type", Config.payment_type);
-            sParaTemp.Add("notify_url", Config.notify_url);
-            sParaTemp.Add("return_url", Config.return_url);
-            sParaTemp.Add("anti_phishing_key", Config.anti_phishing_key);
-            sParaTemp.Add("exter_invoke_ip", Config.exter_invoke_ip);
+            AlipayConfiguration config = new AlipayConfiguration();
+            sParaTemp.Add("service", config.Service);
+            sParaTemp.Add("partner", config.Partner);
+            sParaTemp.Add("seller_id", config.Seller_id);
+            sParaTemp.Add("_input_charset", config.Input_charset.ToLower());
+            sParaTemp.Add("payment_type", config.Payment_type);
+            sParaTemp.Add("notify_url", config.Notify_url);
+            sParaTemp.Add("return_url", config.Return_url);
+            sParaTemp.Add("anti_phishing_key", config.Anti_phishing_key);
+            sParaTemp.Add("exter_invoke_ip", config.Exter_invoke_ip);
             sParaTemp.Add("out_trade_no", out_trade_no);
             sParaTemp.Add("subject", subject);
             sParaTemp.Add("total_fee", total_fee);
             sParaTemp.Add("body", trade_desciption);
             string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
-            context.Response.Write(sHtmlText);
+            return sHtmlText;
         }
 
         /// <summary>
         /// 订单支付
         /// </summary>
+        /// <param name="config">Alipay的基础配置</param>
         /// <param name="out_trade_no">订单号</param>
         /// <param name="subject">订单名称</param>
         /// <param name="total_fee">金额</param>
-        /// <param name="trade_desciption">描述</param>
-        /// <param name="partner">合作身份者ID，签约账号，以2088开头由16位纯数字组成的字符串</param>
-        /// <param name="seller_id">收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号</param>
-        /// <param name="input_charset">字符编码格式 目前支持 gbk 或 utf-8</param>
-        /// <param name="notify_url">服务器异步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数,必须外网可以正常访问</param>
-        /// <param name="return_url">页面跳转同步通知页面路径，需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问</param>
-        /// <param name="anti_phishing_key">防钓鱼时间戳  若要使用请调用类文件submit中的Query_timestamp函数</param>
-        /// <param name="exter_invoke_ip">客户端的IP地址 非局域网的外网IP地址，如：221.0.0.1</param>
-        /// <returns></returns>
-        public static void CostomAlipaySubmit(this HttpContextBase context, string out_trade_no, string subject, string total_fee, string trade_desciption = "",  string partner = "", string seller_id = "", string input_charset = "", string notify_url = "", string return_url = "", string anti_phishing_key = "", string exter_invoke_ip = "")
+        /// <returns>请求字符串</returns>
+        public static string CostomAlipaySubmit(AlipayConfiguration config, string out_trade_no, string total_fee, string subject,string trade_desciption = "")
         {
             SortedDictionary<string, string> sParaTemp = new SortedDictionary<string, string>();
-            sParaTemp.Add("service", Config.service);
-            sParaTemp.Add("partner", partner == string.Empty ? Config.partner : partner);
-            sParaTemp.Add("seller_id", seller_id == string.Empty ? Config.seller_id : seller_id);
-            sParaTemp.Add("_input_charset", input_charset == string.Empty ? Config.input_charset.ToLower() : input_charset.ToLower());
-            sParaTemp.Add("payment_type", Config.payment_type);
-            sParaTemp.Add("notify_url", notify_url == string.Empty ? Config.notify_url : notify_url);
-            sParaTemp.Add("return_url", return_url == string.Empty ? Config.return_url : return_url);
-            sParaTemp.Add("anti_phishing_key", anti_phishing_key == string.Empty ? Config.anti_phishing_key : anti_phishing_key);
-            sParaTemp.Add("exter_invoke_ip", exter_invoke_ip == string.Empty ? Config.exter_invoke_ip : exter_invoke_ip);
+            sParaTemp.Add("service", config.Service);
+            sParaTemp.Add("partner", config.Partner);
+            sParaTemp.Add("seller_id", config.Seller_id);
+            sParaTemp.Add("_input_charset", config.Input_charset.ToLower());
+            sParaTemp.Add("payment_type", config.Payment_type);
+            sParaTemp.Add("notify_url", config.Notify_url);
+            sParaTemp.Add("return_url", config.Return_url);
+            sParaTemp.Add("anti_phishing_key", config.Anti_phishing_key);
+            sParaTemp.Add("exter_invoke_ip", config.Exter_invoke_ip);
             sParaTemp.Add("out_trade_no", out_trade_no);
             sParaTemp.Add("subject", subject);
             sParaTemp.Add("total_fee", total_fee);
-            sParaTemp.Add("body", trade_desciption == string.Empty ? "" : trade_desciption);
+            sParaTemp.Add("body", trade_desciption);
             string sHtmlText = Submit.BuildRequest(sParaTemp, "get", "确认");
-            context.Response.Write(sHtmlText);
+            return sHtmlText;
         }
-
 
         /// <summary>
         /// 服务器同步通知
@@ -161,7 +126,15 @@ namespace DoctorPlatform.Train.Libraries.Alipay
                     if (context.Request.QueryString["trade_status"] == "TRADE_FINISHED" || context.Request.QueryString["trade_status"] == "TRADE_SUCCESS")
                     {
                         paystatus = EnumPayStatus.TRADE_SUCCESS;
-                        logic(out_trade_no, trade_no, trade_status, buyer_id, total_fee, gmt_create, subject);
+                        try
+                        {
+                           logic(out_trade_no, trade_no, trade_status, buyer_id, total_fee, gmt_create, subject);
+                        }
+                        catch (System.Exception ex)
+                        {
+
+                            throw ex;
+                        }   
                     }
                     else
                     {
@@ -226,7 +199,15 @@ namespace DoctorPlatform.Train.Libraries.Alipay
                     if (context.Request.QueryString["trade_status"] == "TRADE_FINISHED" || context.Request.QueryString["trade_status"] == "TRADE_SUCCESS")
                     {
                         paystatus = EnumPayStatus.TRADE_SUCCESS;
-                        logic(out_trade_no, trade_no, trade_status, buyer_id, total_fee, gmt_create, subject);
+                        try
+                        {
+                            logic(out_trade_no, trade_no, trade_status, buyer_id, total_fee, gmt_create, subject);
+                        }
+                        catch (System.Exception ex)
+                        {
+
+                            throw ex;
+                        } 
                     }
                     else
                     {
