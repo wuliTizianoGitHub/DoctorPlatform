@@ -49,6 +49,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Transactions" />
     <Reference Include="System.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -65,6 +66,7 @@
     <Compile Include="Alipay\AliPayCode\MD5.cs" />
     <Compile Include="Alipay\AlipayNotifyUrl.cs" />
     <Compile Include="Alipay\EnumPayStatus.cs" />
+    <Compile Include="Application\Services\IApplicationService.cs" />
     <Compile Include="Bootstrapper.cs" />
     <Compile Include="Configuration\IModuleConfigurations.cs" />
     <Compile Include="Configuration\ModuleConfigurations.cs" />
@@ -90,6 +92,7 @@
     <Compile Include="Dependency\ScopedIocResolver.cs" />
     <Compile Include="Domain\Entities\Auditing\AuditedEntity.cs" />
     <Compile Include="Domain\Entities\Auditing\CreationAuditedEntity.cs" />
+    <Compile Include="Domain\Entities\Auditing\FullAuditedEntity.cs" />
     <Compile Include="Domain\Entities\Auditing\IAudited.cs" />
     <Compile Include="Domain\Entities\Auditing\ICreationAudited.cs" />
     <Compile Include="Domain\Entities\Auditing\IDeletionAudited.cs" />
@@ -104,10 +107,27 @@
     <Compile Include="Domain\Entities\IEntity.cs" />
     <Compile Include="Domain\Entities\IPassivable.cs" />
     <Compile Include="Domain\Entities\ISoftDelete.cs" />
+    <Compile Include="Domain\Repositories\IRepository.cs" />
+    <Compile Include="Domain\Repositories\IRepositoryOfTEntity.cs" />
     <Compile Include="Domain\Repositories\RepositoryBase.cs" />
+    <Compile Include="Domain\Uow\ConnectionStringResolveArgs.cs" />
+    <Compile Include="Domain\Uow\DataFilterConfiguration.cs" />
+    <Compile Include="Domain\Uow\DataFilters.cs" />
+    <Compile Include="Domain\Uow\IActiveUnitOfWork.cs" />
+    <Compile Include="Domain\Uow\IConnectionStringResolver.cs" />
+    <Compile Include="Domain\Uow\IUnitOfWork.cs" />
+    <Compile Include="Domain\Uow\IUnitOfWorkCompleteHandle.cs" />
+    <Compile Include="Domain\Uow\IUnitOfWorkDefaultOptions.cs" />
+    <Compile Include="Domain\Uow\IUnitOfWorkFilterExecuter.cs" />
+    <Compile Include="Domain\Uow\IUnitOfWorkManager.cs" />
+    <Compile Include="Domain\Uow\UnitOfWorkAttribute.cs" />
+    <Compile Include="Domain\Uow\UnitOfWorkBase.cs" />
+    <Compile Include="Domain\Uow\UnitOfWorkFailedEventArgs.cs" />
+    <Compile Include="Domain\Uow\UnitOfWorkHelper.cs" />
+    <Compile Include="Domain\Uow\UnitOfWorkOptions.cs" />
     <Compile Include="EntityFramework\BaseDbContextProvider.cs" />
     <Compile Include="EntityFramework\IDbContextProvider.cs" />
-    <Compile Include="Domain\Repositories\IRepository.cs" />
+    <Compile Include="Domain\Repositories\IRepositoryOfTEntityAndTPrimaryKey.cs" />
     <Compile Include="EntityFramework\Repositories\EfReositoryBase.cs" />
     <Compile Include="EntityFramework\Repositories\IRepositoryWithDbContext.cs" />
     <Compile Include="Exception\BaseException.cs" />
@@ -126,6 +146,8 @@
     <Compile Include="Reflection\ITypeFinder.cs" />
     <Compile Include="Reflection\ReflectionHelper.cs" />
     <Compile Include="Reflection\TypeFinder.cs" />
+    <Compile Include="Runtime\Session\ISession.cs" />
+    <Compile Include="Runtime\Session\NullSession.cs" />
     <Compile Include="Timing\Clock.cs" />
     <Compile Include="Timing\ClockProviders.cs" />
     <Compile Include="Timing\IClockProvider.cs" />
@@ -144,9 +166,7 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Domain\Uow\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

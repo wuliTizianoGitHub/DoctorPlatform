@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace DoctorPlatform.Train.Libraries.Domain.Repositories
+namespace DoctorPlatform.Train.Libraries.Application.Services
 {
-    public interface IRepository : ITransientDependency
+    public interface IApplicationService : ITransientDependency
     {
 
     }

@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 
 namespace DoctorPlatform.Train.Libraries.EntityFramework.Repositories
 {
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <typeparam name="TDbContext"></typeparam>
+    /// <typeparam name="TEntity"></typeparam>
+    /// <typeparam name="TPrimaryKey"></typeparam>
     public class EfReositoryBase<TDbContext, TEntity,TPrimaryKey> : RepositoryBase<TEntity,TPrimaryKey>,IRepositoryWithDbContext 
         where TDbContext :DbContext 
         where TEntity:class,IEntity<TPrimaryKey>

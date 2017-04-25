@@ -19,8 +19,6 @@ namespace DoctorPlatform.Train.Manage.Web.Controllers
         public HomeController()
         {
 
-
-           
             this._repository = new Repository(new ModelStateWrapper(this.ModelState));
         }
 
